@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
-const acorn = require("acorn");
-const acronJsx = require("acorn-jsx");
+const parser = require('@babel/parser')
 const dashAst = require('dash-ast')
 const XmlWriter = require('xml-writer');
 const fs = require('fs')
-const parser = acorn.Parser.extend(acronJsx());
-const code = fs.readFileSync(process.argv[2], 'utf8')
-const ast = parser.parse(code, {ecmaVersion: 2020, sourceType: 'module'});
+const code = fs.readFileSync(process.argv[2], 'utf8').toString()
+const ast = parser.parse(code, {
+  sourceType: 'module',
+  plugins: ['estree', 'jsx', 'typescript'],
+})
 const xml = new XmlWriter(true);
 xml.startDocument();
 
