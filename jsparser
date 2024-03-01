@@ -19,9 +19,9 @@ dashAst(ast, {
     xml.writeAttribute('pos', node.start)
     xml.writeAttribute('length', node.end - node.start)
 
-    if (node.type == 'Identifier') {
+    if (node.type === 'Identifier' || node.type === 'JSXIdentifier') {
       xml.writeAttribute('label', node.name)
-    } else if (node.type == 'Literal') {
+    } else if (node.type === 'Literal') {
       xml.writeAttribute('label', node.raw)
     }
   },
