@@ -2,32 +2,33 @@
 
 const parser = require('@babel/parser')
 const dashAst = require('dash-ast')
-const XmlWriter = require('xml-writer');
+const XmlWriter = require('xml-writer')
 const fs = require('fs')
 const code = fs.readFileSync(process.argv[2], 'utf8').toString()
 const ast = parser.parse(code, {
   sourceType: 'module',
   plugins: ['estree', 'jsx', 'typescript'],
 })
-const xml = new XmlWriter(true);
-xml.startDocument();
+const xml = new XmlWriter(true)
+xml.startDocument()
 
 dashAst(ast, {
-    enter: function(node, parent) {
-        xml.startElement('tree');
-        xml.writeAttribute('type', node.type);
-        xml.writeAttribute('pos', node.start);
-        xml.writeAttribute('length', node.end - node.start);
+  enter: function (node, parent) {
+    xml.startElement('tree')
+    xml.writeAttribute('type', node.type)
+    xml.writeAttribute('pos', node.start)
+    xml.writeAttribute('length', node.end - node.start)
 
-        if (node.type == 'Identifier')
-            xml.writeAttribute('label', node.name);
-        else if (node.type == 'Literal')
-            xml.writeAttribute('label', node.raw);
-      },
-      leave: function(node, parent) {
-        xml.endElement();
-      }
-});
+    if (node.type == 'Identifier') {
+      xml.writeAttribute('label', node.name)
+    } else if (node.type == 'Literal') {
+      xml.writeAttribute('label', node.raw)
+    }
+  },
+  leave: function (node, parent) {
+    xml.endElement()
+  },
+})
 
-xml.endDocument();
-console.log(xml.toString());
+xml.endDocument()
+console.log(xml.toString())
