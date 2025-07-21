@@ -8,6 +8,7 @@ const code = fs.readFileSync(process.argv[2], 'utf8').toString()
 const ast = parser.parse(code, {
   sourceType: 'module',
   plugins: ['estree', 'jsx', 'typescript'],
+  errorRecovery: true,
 })
 const xml = new XmlWriter(true)
 xml.startDocument()
